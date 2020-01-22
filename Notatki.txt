@@ -131,5 +131,26 @@ MACHINE LEARNING
 					i na podstawie danych z Traning bedziemy chcieli przewidzieć gdzie wpadnie piłka z pozycji "10", bo taka pozycja jest w pierwszym elemencie "Test", jeśli algorytm przewidzi, ze wpadnie 1, to mamy pierwszy mały sukces. Taką samą operację zrobimy dla każdego elementu z "Test"
 						
 
-				
+            Teraz weźmiemy pod uwagę, więcej zmeinnych:
+            	Nasza implementacja KNN (with multiple independent variable)
+                    Which bucket will a ball go into dropped at 300px? ->
+                    -> Drop a ball a bunch of times all around the board, record which bucket it goes into ->
+                    -> TYLKO OBLICZENIA W TYM PUNKCIE SIĘ ZMIENIĄ! - For each observation, substract drop point from 300px, take absolute value abs(dropPosition - 300, boucness - 0.5) ->
+                        Wczesniej obliczanie odległosci moglibyśmy rpzedstawić na jednej osi X (one dimentional distance), a teraz te obliczenia będą odległosciach w ukałdzie współrzednych X Y (multi dimentional distance).
+                        Odległość będziemy liczyć z pitagorasa, bo to będzie najmniejsza odległość pomiędzy poszczególnymi punktami
 
+                    -> Sort the result from least to greatest ( tutaj sortujemy pod względem tej wartości po wcyciągnieciu z niej wartości bezwzględnej czyli z abs(dropPosition - 300). Generanei u góry będą wtedy zrzucenia piłki najbliżej pozycji 300px) ->
+                    -> Look at the "k" top records. What was the most common bucket? "k" oznacza tutaj top 5 lub 6 lub whatever wynikow. Dla k=3 bierzemy 3 wyniki z góry naszej tabeli, i wybeiramy najczęstszy przypadek, czyli do jakeigo pudełka piłka wpada najczeciej. Oczywiście ilość "k" jest bardzo ważna, ale generlanie "k" moze przyjmować wiele wartości w zależności od Ciebie i co chcesz zrobic ->
+                    -> Wchichever bucket came up most frequently is the one ours will probably go into
+
+                Jeśli będziemy chcieli uwzględnić 3 zmienne (dropPosition, bouciness, ball size), to będziemy liczyć odległość w 3D
+
+            UWAGA!
+                W kursie na początku celowo źle pokazał Osie. Byz a duży rozstaw pomiędzy 0.5 a 0.55 w bounciness.\
+                W rzeczywistości jak liczmy odległośc okazuje sie, ze bouciness ma małę znaczenia, bo daje bardzo mały "dodatek" do odległości
+
+            Trzeba więc Znormalizować lub Standaryzować nasze dane!!!
+
+            WARTO zrobić screeny z tego kursu z tych rysunków itd.
+
+            Normalized Dataset = (FeatureValue - minOfFeatureValues) / (maxOfFeatureValues - minOfFeatureValues)
