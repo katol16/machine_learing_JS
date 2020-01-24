@@ -15,7 +15,7 @@ function runAnalysis() {
     const testSetSize = 100;
 
     // Poniżej mały destructuring. Pamiętaj, ze splitDataset zwróci tablice z dwoma elementami i teraz te elementy wyciągniemy i wrzucimy do zmeinnych
-    const [testSet, trainingSet] = splitDataset(outputs, testSetSize);
+    const [testSet, trainingSet] = splitDataset(minMax(outputs, 3), testSetSize);
 
     // let numberCorrect = 0;
     // for (let i = 0; i < testSet.length; i++) {
@@ -139,3 +139,22 @@ function splitDataset(data, testCount) {
 
     return [testSet, traningSet]
 };
+
+// Dodajemy to featureCount, ponieważ mozliwe, ze dodamy jeszcze keidyś nwoe feature, no i nie chemy calosci normalizować, bo nie normalizujemy "bucket"
+function minMax(data, featureCount) {
+    // cloneDeeo to funckja z lodash, potrzbujemy jej, bo chcemy zmeiniac "data", a nie chcemy naruszyć orginalnych wartości, dlatego je sklonujemy
+    const clonedData = _.cloneDeep(data);
+
+    for (let i=0; i < featureCount; i++) {
+        const column = clonedData.map(row => row[i]);
+
+        const min = _.min(column);
+        const max = _.max(column);
+
+        for (let j=0; j < clonedData.length; j++) {
+            clonedData[j][i] = (clonedData[j][i] - min) / (max - min);
+        }
+    }
+
+    return clonedData; // to nam zwróci tablicę ze znormlaizowanymi danymi
+}

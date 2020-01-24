@@ -151,6 +151,55 @@ MACHINE LEARNING
 
             Trzeba więc Znormalizować lub Standaryzować nasze dane!!!
 
+            NORMALIZATION/SCALING oraz STANDARIZATION
+                NORMALIZATION/SCALING -> można spotkać dwie nazwy
+
             WARTO zrobić screeny z tego kursu z tych rysunków itd.
 
-            Normalized Dataset = (FeatureValue - minOfFeatureValues) / (maxOfFeatureValues - minOfFeatureValues)
+            Poniższy wzór stosujemy do tylko jednej wartości, np. do dropPosition albo do bouciness itd.
+                Normalized Dataset = (FeatureValue - minOfFeatureValues) / (maxOfFeatureValues - minOfFeatureValues)
+
+                Przykład jak to wygląda w praktyce:
+                     Drop Position                               Normalized Positions
+                     200                                          .1
+                     150              -> Min: 150 Max: 650        0
+                     650                                          1
+                     430                                          .56
+
+                Teraz jak by wyglądał kod do tego przy pomocy lodash
+                const points = [200, 150, 650, 430];
+
+                const min = _.min(points);
+                const max = _.max(points);
+
+                _.map(points, point => {
+                    return (point - min) / (max - min); // wyrzuci [0.1, 0, 1, 0.56]
+                });
+
+        UWAGA!
+        Po tych naszych operacjach, czyli normlalizowaniu danych (dropPoint, bouciness, ballSize), okazuje się, że uzyskujemy gorsze wyniki niż wcześniej!
+        Trzeba wiec się zastanowić na ile bouciness i ballSize mają znaczenia. Bardzo możłiwe, ze nie powinny być traktowane równie poważnie co dropPosition
+
+        Feature Selection with KNN
+            Changes to DropPosition -> Predictable changes to output
+            Changes to Ball Bounciness -> Changes our output but not predictably -> więc powinniśmy inaczej trakować Ball Bounciness
+
+            Feature selection -> Deciding which features to include in analysis
+
+            [
+                [300,4],
+                [350,5],
+                [416,4],
+                [722,7]
+            ]
+            -> Dataset with only drop position -> KNN -> Accuracy of 30%
+
+            [
+                [.5,4],
+                [.52,5],
+                [.53,4],
+                [.55,7]
+            ]
+            -> Dataset with only bounciness -> KNN - Accuracy of 10%
+
+            Patrząc na powyżśze przykąłdy możemy dojść do wnisoku, że lepiej ignorować bounciness
