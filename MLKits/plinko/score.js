@@ -15,7 +15,7 @@ function runAnalysis() {
     const testSetSize = 100;
 
     // Poniżej mały destructuring. Pamiętaj, ze splitDataset zwróci tablice z dwoma elementami i teraz te elementy wyciągniemy i wrzucimy do zmeinnych
-    const [testSet, trainingSet] = splitDataset(minMax(outputs, 3), testSetSize);
+    // const [testSet, trainingSet] = splitDataset(minMax(outputs, 3), testSetSize);
 
     // let numberCorrect = 0;
     // for (let i = 0; i < testSet.length; i++) {
@@ -30,7 +30,34 @@ function runAnalysis() {
 
     // range to prosto funkcja z lodash
     // tutaj w range podajemy parametr pcozątkowy i końcowy, to są nasze wartości "k" (tutaj bedzie od 1 do 19), pozniej dopalamy forEach, ktory dla kazej tej wartości "k", stworzy const accuracy
-    _.range(1,20).forEach(k => {
+    // _.range(1,20).forEach(k => {
+    //     // To poniżej robi za pomocą "lodash" to samo co zakomentowana pętla for powyżej.
+    //     const accuracy = _.chain(testSet)
+    //
+    //         // to byłow cześniej z one dimentional distance
+    //         // .filter(testPoint => knn(trainingSet, testPoint[0], k) === testPoint[3])
+    //
+    //         // dzięki _.initial(testPoint), mamy pewnosć, że przekażemy tablice z 3 features bez koszyka, do którego wpadła piłka
+    //         .filter(testPoint => knn(trainingSet, _.initial(testPoint), k) === testPoint[3])
+    //         .size()
+    //         .divide(testSetSize)
+    //         .value();
+    //
+    //     console.log('For k of:', k ,'Accuracy: ', accuracy);
+    // });
+
+    // Poniżej już przykład gdzie "k" jest ustalone, tera bedziemy analziwoac ze względu na tylko jedenf eature
+    // Po pewnych analizach, doszliśmy do wniosku, ze "k" bedzie mieć wartość 10
+    const k = 10;
+    // od do do 3 (bez 3) bo mamy tyle feature: 0 - to dropBouciness itd.
+    _.range(0,3).forEach(feature => {
+
+        const data = _.map(outputs, row => [row[feature], _.last(row)]);
+
+        // Poniżej mały destructuring. Pamiętaj, ze splitDataset zwróci tablice z dwoma elementami i teraz te elementy wyciągniemy i wrzucimy do zmeinnych
+        // Dodatkowo pamießja, ze na potrzebnyt ej analizy dla tlyko jendego feature, przenieśłiśmy to tutaj do forEach
+        const [testSet, trainingSet] = splitDataset(minMax(data, 1), testSetSize);
+
         // To poniżej robi za pomocą "lodash" to samo co zakomentowana pętla for powyżej.
         const accuracy = _.chain(testSet)
 
@@ -38,12 +65,12 @@ function runAnalysis() {
             // .filter(testPoint => knn(trainingSet, testPoint[0], k) === testPoint[3])
 
             // dzięki _.initial(testPoint), mamy pewnosć, że przekażemy tablice z 3 features bez koszyka, do którego wpadła piłka
-            .filter(testPoint => knn(trainingSet, _.initial(testPoint), k) === testPoint[3])
+            .filter(testPoint => knn(trainingSet, _.initial(testPoint), k) === _.last(testPoint))
             .size()
             .divide(testSetSize)
             .value();
 
-        console.log('For k of:', k ,'Accuracy: ', accuracy);
+        console.log('For feature of:', feature ,'Accuracy: ', accuracy);
     });
 
 };

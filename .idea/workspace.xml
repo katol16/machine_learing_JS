@@ -60,7 +60,9 @@
       <option name="presentableId" value="Default" />
       <updated>1544772609551</updated>
       <workItem from="1544772610743" duration="2952000" />
-      <workItem from="1579713973965" duration="8644000" />
+      <workItem from="1579713973965" duration="9019000" />
+      <workItem from="1579803837471" duration="324000" />
+      <workItem from="1580057517048" duration="6164000" />
     </task>
     <servers />
   </component>
@@ -68,9 +70,29 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="2243" y="995" width="424" height="484" key="FileChooserDialogImpl" timestamp="1579804159220">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state x="2243" y="995" width="424" height="484" key="FileChooserDialogImpl/67.27.1853.1053/1920.0.1080.1920@1920.0.1080.1920" timestamp="1579804159220" />
     <state x="1949" y="872" key="SettingsEditor" timestamp="1579716991154">
       <screen x="1920" y="0" width="1080" height="1920" />
     </state>
     <state x="1949" y="872" key="SettingsEditor/67.27.1853.1053/1920.0.1080.1920@1920.0.1080.1920" timestamp="1579716991154" />
+    <state x="2116" y="1065" key="com.intellij.ide.util.TipDialog" timestamp="1579803840311">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state x="2116" y="1065" key="com.intellij.ide.util.TipDialog/67.27.1853.1053/1920.0.1080.1920@1920.0.1080.1920" timestamp="1579803840311" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/MLKits/plinko/score.js</url>
+          <line>17</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

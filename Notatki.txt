@@ -202,4 +202,53 @@ MACHINE LEARNING
             ]
             -> Dataset with only bounciness -> KNN - Accuracy of 10%
 
-            Patrząc na powyżśze przykąłdy możemy dojść do wnisoku, że lepiej ignorować bounciness
+            Patrząc na powyższe przykąłdy możemy dojść do wniosku, że lepiej ignorować bounciness
+
+            W naszym kodzie zrobimy teraz takie zmiany, które pomogą nam zrobić "feature selection",
+            bo będą odpalać analizę tlyko dla jednego feature
+
+            Po analizie dla każdego "feature" dochodzimy do wniosku, że analiza TYLKO bouciness lub ballSize,
+            jest nam zupełnie niepotrzebna. Nie mówi to nam nic o potenjclanym wyniku.
+            Dochdozimy do wniosku, ze w takiej analizie potrzbeujemy tylko dropPosition!
+            Mimo tego, ze bouciness i ballSize, moze wpłynąć na wynik, to jednak nie jest to coś co pomoze nam w przewidywaniach.
+            (bouciness i ballSize) Ma wpływ, ale ten wpływ nie jest przewidywalny
+
+        The End of the Introduction:
+            - Features vs Labels
+            - Test vs Training sets of data
+            - Feature Normalization
+            - Common data structures )arrays of arrays)
+            - Feature Selection
+
+        Porównanie Lodash i Tensorflow do naszego użytku
+
+            Lodash:
+                Plusy:
+                    - Methods for just about everyting we need
+                    - Excellent API design (especially chain!)
+                    - Skills transferrable to other JS projects
+                Minusy:
+                    - Extremely slow (relatively)
+                    - Not 'numbers' focused
+                    - Some things are awkward (getting a columns of values)
+
+            Tensorflow JS:
+                Plusy:
+                    - Similar API to Lodash
+                    - Extremely fast for numeric calculations
+                    - Has a "low level" linear algerba API + higher level API for ML
+                    - Similar api to numpy - popular Python numerical lib
+                Minusy:
+                    - Still in active development
+
+        Plan na następną częśc kursu związaną z Tensorflow.js
+            - Learn some fundamentals around Tensorflow JS
+            - Go through a couple exercises with Tensorflow
+            - Rebuild KNN algorithm using Tensorflow
+            - Build other algorithms with Tensorflow
+
+            What's the fastest way to learn ML?
+            Where are the algorithms and cool examples ?
+                Answers:
+                -> The fastest way to learn ML is to master fundamental operations around working with data. ->
+                -> Strong knowledge of data handling basics makes applying any algorithm trivial.
