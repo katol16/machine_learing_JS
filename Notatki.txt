@@ -252,3 +252,45 @@ MACHINE LEARNING
                 Answers:
                 -> The fastest way to learn ML is to master fundamental operations around working with data. ->
                 -> Strong knowledge of data handling basics makes applying any algorithm trivial.
+
+        Tensorflow.js
+            js.tensorflow.org -> documentation
+
+            Tensor to javascript obiekt, który trzyma tablice w tablicach (w tych tablicach są nasze dane)
+
+            W Tensorflow będziemy często posługiwac się konkretnym slownictwem. Każdy tensor ma swój wymiar/wymiary, ma sój "Shape" np:
+                Dimensions:
+                    1 Dimensional:
+                        [200, 400, 600]
+                    2 Dimensional:
+                        [
+                            [300, 0.4, 16, 4],
+                            [300, 0.4, 16, 4],
+                            [300, 0.4, 16, 4],
+                            [300, 0.4, 16, 4]
+                        ]
+                    3 Dimensional:
+                        [
+                            [
+                                [5,5,6]
+                            ]
+                        ]
+
+                Shape -> How many records in each dimension? (one for each dimension)
+                    Ważne tu jest to, ze jak masz np:
+                        [
+                            [5,10,17],
+                            [18,4,2]
+                        ]
+
+                        to shape bedzie [2,3], a NIE [2,3,3] ! (One time an each level of a dimension)
+
+
+            2D is most important dimension we will work with
+                 [
+                     [300, 0.4, 16, 4],
+                     [300, 0.4, 16, 4],    -> [#rows, #columns] -> [3,4] -> ta 3 to shape pierwszej tablicy, a ta 4 to jej wewnętrznej tablicy
+                     [300, 0.4, 16, 4]
+                 ]
+
+                 [#rows, #columns] -> number of rows, number of columns
