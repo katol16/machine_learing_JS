@@ -294,3 +294,113 @@ MACHINE LEARNING
                  ]
 
                  [#rows, #columns] -> number of rows, number of columns
+
+        Przykłady w kodzie dla TensorFlow
+
+            const data = tf.tensor([1,2,3]); // tf - to referencja do Tensorflow
+            const otherData = tf.tensor([4,5,6]);
+            data.shape; // [3] -> czyli shape tensora
+
+            // Teraz dodanie każdej wartości tensora do siebie (tzn. do "data" dodamy "otherData")
+            data.add(otherData); // zwróci -> [5,7,9]
+            // To powyżej to tzw. "Element wise opertion"
+            // Bardzo ważna informacja jest taka, że tensorflow.js, nie zmieni orginalnych wartości, czyli:
+            data; // zwróci -> [1,2,3]
+            otherData; // zwróci -> [4,5,6]
+
+            // inne operacje sub - odejmowanie
+            data.sub(otherData); // [-3,-3,-3]
+
+            // mul - mnożenie
+            data.mul(otherData);
+
+            // div - dzielenie
+            data.div(otherData)
+
+            Jeśli "shapes don't match", to na ogól nie możmey zrobić tych operacji "element wise operation", ale będą często przypadki, gdzie i tak będzie to w jakiś sposób to robić
+
+            Jeszcze przykład "element wise operation" z tensorami 2D
+                const data = tf.tensor([
+                    [1,2,3],
+                    [4,5,6],
+                ]);
+                const otherData = tf.tensor([
+                    [4,5,6],
+                    [1,2,3],
+                ]);
+
+                data.add(otherData); // zwróci -> [[5,7,9],[5,7,9]]
+
+            Poniżej operacje gdzie "shapes don't match",
+            const data = tf([1,2,3]);
+            const otherData = tf([4]);
+
+            data.add(otherData); // To się wykona normlanie i zwróci [5,6,7] -> czyli doda do każdego 4
+
+            Proces w którym chcemy wykonać "element wise operation" na tablicach o róznych długosciach nazywammy BROADCASTING
+                Broadcasting works when...
+                    Take shape of both tensors -> From right to left, the shapes are equal or oen is '1'
+                    W praktyce to wygląda tak:
+                        [1,2,3] + [4] = [5,6,7];
+
+                        teraz porównujemy shape tensora [1,2,3] i [4].
+                            niech to będzie x = shape z [1,2,3] a y = shape z [4]
+                        jeżeli x === y lub (x===1 lub y===1) to możemy zrobić broadcasting !!!
+
+                        kolejny przykład:
+                            1   2   3      -     1       =         0    1    2
+                            4   5   6      -     1                 3    4    5
+                            shape -> [2,3]     shape -> [2,1]
+
+                            W powyższym przypadku porównujemy 3 z 1 (jeden element równa się jeden -> możńa broadcasting) oraz porównujemy 2 z 2 (są rowne -> wiec tez mozna broadcasting) -> Czyli ostatecznie mozna broadcasting
+
+                        Następny przykład:
+                            Najlepiej sprawdzić to w kursie, to jest lekcja nr 38
+
+                            mamy shape [2,3,2] oraz [3,1]
+                            będziemy to porównywać w taki sposób
+                                2   3   2 -> shape peirwszego
+                                    3   1 -> shape drugiego
+                            Czyli przesuwamy te shape maksymalnie na prawą stronę! Dalej analizujemy:
+                            2 porónujemy do 1 -> mamy jeden wiec mozmey broadcasting
+                            3 porównujemy do 3 -> są róne więc mozemy broadcasting
+                            2 nie mamy do czego porównać, wiec rezygnujemy z porównywania i wciąż MOŻEMY robić broadcasting!
+
+                            OSTATECZNIE -> Możemy!
+
+                        Ostatni przykład:
+                            mamy shape [2,3,2] oraz [2,1]
+                            będziemy to porównywać w taki sposób
+                                 2   3   2 -> shape peirwszego
+                                     2   1 -> shape drugiego
+                            2 porónujemy do 1 -> mamy jeden wiec mozemy broadcasting
+                            3 porównujemy do 2 -> Nie są róne więc NIE mozemy broadcasting
+
+                            OSTATECZNIE -> Nie możemy!
+
+                    MAłA UWAGA!
+                        Tam wypisywaliśy np. że:
+                            const data = tf.tensor([1,2,3]); // tf - to referencja do Tensorflow
+                            data; // zwróci -> [1,2,3]
+                            // to powyzej, nie jest do końća prawdą, tak zwracało w edytorze Stpehena Gridera
+                            // Normlanie musisz zrobić data.print(); // bo pamięaj, ze ten tensor [1,2,3] będzie w obiekcie
+                            // Tensorflow wszysktie swoje iformacje trzyma w obiekcie
+                            // UWAGA! Nie robimy czegoś takiego console.log(data.print()) -> print robi console.log za nas!
+
+
+                Tensor Accessors:
+                    1D Accessors:
+                        const data = tf.tensor([10,20,30]);
+                        data.get(0); // zwróci 10, czyli pierwszy element
+                        data[0]; // NIE możemy tak robić na tensorach! Zwróci błąd!
+
+                    2D Accessors:
+                        const data = tftensor([
+                            [10, 20, 30],
+                            [40, 50, 60]
+                        ]);
+                        data.get(0,0); // zwróci 10, czyli pierwszy element
+                        data.get(1,0); // zwróci 40
+
+                        Pamiętaj!
+                        data.set -> NIE MA "SET"!
