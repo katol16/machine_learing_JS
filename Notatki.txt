@@ -289,7 +289,7 @@ MACHINE LEARNING
             2D is most important dimension we will work with
                  [
                      [300, 0.4, 16, 4],
-                     [300, 0.4, 16, 4],    -> [#rows, #columns] -> [3,4] -> ta 3 to shape pierwszej tablicy, a ta 4 to jej wewnętrznej tablicy
+                     [300, 0.4, 16, 4],    -> [#rows, #columns] -> [3,4]
                      [300, 0.4, 16, 4]
                  ]
 
@@ -317,7 +317,7 @@ MACHINE LEARNING
             // div - dzielenie
             data.div(otherData)
 
-            Jeśli "shapes don't match", to na ogól nie możmey zrobić tych operacji "element wise operation", ale będą często przypadki, gdzie i tak będzie to w jakiś sposób to robić
+            Jeśli "shapes don't match", to na ogół nie możmey zrobić tych operacji "element wise operation", ale będą często przypadki, gdzie i tak będzie to w jakiś sposób to robić
 
             Jeszcze przykład "element wise operation" z tensorami 2D
                 const data = tf.tensor([
@@ -339,7 +339,7 @@ MACHINE LEARNING
 
             Proces w którym chcemy wykonać "element wise operation" na tablicach o róznych długosciach nazywammy BROADCASTING
                 Broadcasting works when...
-                    Take shape of both tensors -> From right to left, the shapes are equal or oen is '1'
+                    Take shape of both tensors -> From right to left, the shapes are equal or one is '1'
                     W praktyce to wygląda tak:
                         [1,2,3] + [4] = [5,6,7];
 
@@ -382,9 +382,9 @@ MACHINE LEARNING
                         Tam wypisywaliśy np. że:
                             const data = tf.tensor([1,2,3]); // tf - to referencja do Tensorflow
                             data; // zwróci -> [1,2,3]
-                            // to powyzej, nie jest do końća prawdą, tak zwracało w edytorze Stpehena Gridera
-                            // Normlanie musisz zrobić data.print(); // bo pamięaj, ze ten tensor [1,2,3] będzie w obiekcie
-                            // Tensorflow wszysktie swoje iformacje trzyma w obiekcie
+                            // to powyzej, nie jest do końca prawdą, tak zwracało w edytorze Stpehena Gridera
+                            // Normlanie musisz zrobić data.print(); // bo pamiętaj, ze ten tensor [1,2,3] będzie w obiekcie
+                            // Tensorflow wszystkie swoje iformacje trzyma w obiekcie
                             // UWAGA! Nie robimy czegoś takiego console.log(data.print()) -> print robi console.log za nas!
 
 
@@ -404,3 +404,57 @@ MACHINE LEARNING
 
                         Pamiętaj!
                         data.set -> NIE MA "SET"!
+
+                How to access many elements:
+                    TensorFlow, daje tu dużo możliwości
+                    My użyjemy metody slice(), która przyjmuje dwa parametry (start index, size), gdzie size jest NOT ZERO INDEX (czyli zawsze zayczna się od 1 a nie od 0)
+                    Start index ,to coś jakby wyznaczyć z jakiej pozycji zacyznamy (row, column) i to row cloumns bedzie w tablicy w kolejnosci [row, column],
+                    w size będzie, ilość row i ilość column (szerokośc kolumn) i te ilosci tez beda w tablicy w kolejnosci [row, column].
+                        Przykład:
+                            const data - tf.tensor([
+                                [10, 20, 30],
+                                [40, 50, 60],
+                                [20, 40, 60]
+                            ]}
+
+                            Teraz załóżmy, że chcemy pobrać tylko środkową kolumnę, to bedzie
+                            data.slice([0,1],[3,1]); // zwróci [[20],[50],[40]]
+
+                            Bardzo często będzie cieżko w size uzyskać rozmiar, czy będzię ciężko uzyskać tę "3", z kodu wyzej, generalnei to zły pomysł by ta "3" była hardcoded.
+                            Można więc tę "3" uzyskać za pomocą data.shape[0], więc to też zadziała dobrze:
+                            data.slice([0,1],[data.shape[0],1]);
+                            Można to jednak zrobić łatwiej i wstawić po prostu "-1" w to meijsce gdzie jest "3". To "-1" oznacza "daj mi wszystkie rowsy, jakie znajdziesz od odpowiedniego miejsca"
+                            data.slice([0,1],[-1,1]); -> też zadziała! Najprostrzy sposób
+
+                Tensor Concatenation
+                    Obrazkowy przykład:
+                        10 20 30    C  O  N    70 80 90   W Y N     10 20 30 70 80 90
+                        40 50 60    C  A  T    40 50 60    I K      40 50 60 40 50 60
+
+                    Teraz przykład w kodzie:
+                        const tensorA = tf.tensor([
+                            [1,2,3],
+                            [4,5,6]
+                        ]);
+                        const tensorB = tf.tensor([
+                            [7,8,9],
+                            [10,11,12]
+                        ]);
+
+                        tensorA.concat(tensorB); // Zwróci [[1,2,3],[4,5,6],[7,8,9],[10,11,12]] , co nie jest do końca porządnym, bo chociażby "shape" się zmienia.
+                            Tutaj chcemy uzyskać taki efekt:
+                                [[1,2,3,4,5,6],[7,8,9,10,11,12]]
+
+                        Czasami możemy chcieć uzyskać ten efekt z: [[1,2,3],[4,5,6],[7,8,9],[10,11,12]] , ale możmey chciec to co powyzej, czyli [[1,2,3,4,5,6],[7,8,9,10,11,12]]
+                        Dlatego w metodzie concat, mozemy dodać drugi parametr (1 lub 0, gdzie zero jest defaultowo), aby uzyskać efekt z : [[1,2,3,4,5,6],[7,8,9,10,11,12]]
+                             tensorA.concat(tensorB, 1); // zwróci  [[1,2,3,4,5,6],[7,8,9,10,11,12]]
+                             Co oznacza ten drugi parametr "1" ?
+
+                            AXIS   <-| 10 20 30    C  O  N    70 80 90   W Y N     10 20 30 70 80 90
+                             0     <-| 40 50 60    C  A  T    40 50 60    I K      40 50 60 40 50 60
+                                     _______________________________________________________________
+                                                                 |
+                                                               AXIS 1
+                             Wartość "0" oznacza, ze chcemy concatenować po AXIS 0, natomiast "1", ze chcemy concatenwoać po AXIS 1.
+                                Czyli dla "0" jest [[1,2,3],[4,5,6],[7,8,9],[10,11,12]]
+                                Natomiast dla "1" jest [[1,2,3,4,5,6],[7,8,9,10,11,12]]
