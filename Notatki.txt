@@ -458,3 +458,50 @@ MACHINE LEARNING
                              Wartość "0" oznacza, ze chcemy concatenować po AXIS 0, natomiast "1", ze chcemy concatenwoać po AXIS 1.
                                 Czyli dla "0" jest [[1,2,3],[4,5,6],[7,8,9],[10,11,12]]
                                 Natomiast dla "1" jest [[1,2,3,4,5,6],[7,8,9,10,11,12]]
+
+                Teraz robimy przykład:
+                    Będziemy brać pod uwagę skoki w dal. Taki zestaw danych:
+                        Jump1   Jump2   Jump3       Player  Height(cm)
+                        70      40      73          1       182
+                        62      53      25          2       173
+                        61      65      54          3       186
+                        59      34      73          4       190
+
+                    Najpierw zrobimy sume tych Jumpów:
+                        Jump1   Jump2   Jump3   JumpSum       Player  Height(cm)
+                        70      40      73      183              1       182
+                        62      53      25      179              2       173
+                        61      65      54      170              3       186
+                        59      34      73      186              4       190
+                    A później zrobimy concatenację JempSUm z Player i Height
+                        JumpSum       Player  Height(cm)
+                        183              1       182
+                        179              2       173
+                        170              3       186
+                        186              4       190
+                    Więc teraz skupimy się na tym, żeby utworzyć taki zestaw danych za pomocą TensorFlow.js
+
+                        const jumpData = tf.tensor([
+                            [70, 70, 70],
+                            [70, 70, 70],
+                            [70, 70, 70],
+                            [70, 70, 70],
+                        ]);
+
+                        const playerData = tf.tensor([
+                            [1, 160],
+                            [2, 160],
+                            [3, 160],
+                            [4, 160],
+                        ]);
+
+                        // teraz będziemy sumować wartości wewnątrz tensora (jump1 + jump2 + jump3)
+                        // Defaultowo doda wszystkie wartości dlatego jumpData.sum(); // zwróci 840
+                        // My chcemy innego rezultatu (sum along axis -> było to cześniej) więc:
+                        // Mamy axis 0 pionowo i axis 1 poziomo. Mamy sumwoać poziomo więc będzie:
+                            jumpData.sum(1); // zwróci [210,210,210,210]
+                        // Teraz concatujemy
+                            jumpData.sum(1).concat(playerData); // To zwróci BLĄD -> Error in concat1D: rank(rank -> wymiar) of tensors[1] must be the same as the rank of the rest (1)
+                            // W następnej lekcji powiemy co z tym zrobić i ska ten błąd:
+
+
