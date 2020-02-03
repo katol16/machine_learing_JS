@@ -502,6 +502,20 @@ MACHINE LEARNING
                             jumpData.sum(1); // zwróci [210,210,210,210]
                         // Teraz concatujemy
                             jumpData.sum(1).concat(playerData); // To zwróci BLĄD -> Error in concat1D: rank(rank -> wymiar) of tensors[1] must be the same as the rank of the rest (1)
-                            // W następnej lekcji powiemy co z tym zrobić i ska ten błąd:
+                            // W następnej lekcji powiemy co z tym zrobić i skad ten błąd:
+                            jumpData.shape; // zwróci [4,3]
+                            // Natomiast
+                            jumpData.sum(1); // zwróci [4] i to nam powoduje zamieszanie, bo nie mozemy concatenować 1d tensor z 2d
+                            // funckję takie jak "sum" jako efekt uboczny redukują dimensions
+                        // Dlatego zrobimy to inaczej i dodamy do sum kolejny opcjonalny parametr "true", który odpowiada za "keep dimension", wiec nie skróci dimension
+                        // Czyli będzie:
+                            // tutaj w concat mamy jako drugi parametr "1", bo mamy concatenować po columns a nie row. Tutaj jak nie damy tej "1" jako drugi parametr, to w ogole wyskoczy błąd
+                            jumpData.sum(1, true).concat(playerData, 1);
 
+                        // Teraz drugi sposób na rozwiązanie tego problemu. Troche trudniejszy, ale bardziej uniwersalny, ponieważ pozwoli załatwić ten problem dla inncy fukcnji, którre zmeiniają wymiar, ne tylko dla "sum"
+                            // expandDims, to funckja, która zwiększą ilość wymiarów o jeden ale to jumpData.sum(1).expandDims(); utworzy nam coś takiego: [[210,210,210,210],] -> czyli 1row 4 columny, a my chcemy mieć 4 row i 1 kolumna
+                            // wiec musimy jeszcze dodać dodatkowy argument do expandDims, czyli "1", wiec bedzie expandDims(1)
+                            // jumpData.sum(1).expandDims(1);
+                            // a na koniec jeszcze concat
+                                  jumpData.sum(1).expandDims(1).concat(playerData, 1);
 
