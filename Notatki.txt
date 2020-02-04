@@ -519,3 +519,41 @@ MACHINE LEARNING
                             // a na koniec jeszcze concat
                                   jumpData.sum(1).expandDims(1).concat(playerData, 1);
 
+
+            Kolejna Sekcja: Application of Tensorflow
+                KNN with regression
+                    Steps:
+                        - Apply a slightly different KNN algorithm in the browser with Tensorflow JS and fake data
+                        - Move KNN algorithm to our code editor with real data and run in Node JS environment
+                        - Do some optimization
+
+                    Teraz zrobimy inny przykład:
+                        Mamy lokalizację domu i jego cenę -> takie dane mamy
+                        Mamy za pomocą tych danych odgadnąć cenę domu znajac tylko jego lokalizację
+                        Będziemy tu też mieli też prawdopodbnie rozmiar domu (ile pokoi itd.)
+
+                    Jakie mamy różnice pomiędzy przykłądem z koszykami i piłkami?
+                        Which bucket will a ball go into -> Classification (previously)c
+                        What is the price of a house     -> Regression (now)
+
+                    Więc teraz będziemy mieli algorytm KNN do Regression, który będzie wygląał tak:
+                        KNN Algorithm
+                            - Find distance between features and prediction point
+                            - Sort from lowest point to greates
+                            - Take the top K records
+                            - Average the label value of those top K records (więc tu jest średnia, czyli troche inaczej niż w Classification)
+
+                        Zestawienie danych
+
+                            Longitude Latitude      House Price(thousand $)       Prediction point:
+                            84        83            200                           Long      Lat
+                            84.1      84            250                           84.2      85.2
+                            83.5      82.7          245
+                            86        83            234
+                            84        83            201
+                              FEATURES             LABELS
+
+                            Ponieważ będziemy chcieli wykonywać operacje tylko na House Price, a nie na Longitude i Latitude, będziemy te dwa tensory trzymać osobno.
+                            Robimy to z tego względu, że ciężko będzie zorbić jakaś operację np. "add", tlyko dla części danego tensora. Te metody jak "add" itd. działają dla wszysktich elementów tensora
+                            Piszę o tym bo wczesniej w PLINKO, mieliśmy Features i labels w jednym miejscu (tzn. [dopPosition, bounciness, ballSize, bucket])
+                            Czylit eraz podzielimy nasze Features i Labels na dwa rózne data sety (dwa tensory)
