@@ -606,12 +606,97 @@ MACHINE LEARNING
                                 .expandDims(1) // musimy zrobic, bo bez tego mamy shape [4] a labels mają shape [4,1]
                                 .concat(labels, 1) // ta "1" jako drugi parametr, bo musimy concatenować po columns (było o tym wcześniej)
                         Teraz zajmiemy się problemem "Tensors can't be sorted", uzyjemy do tego funkcji unstack
+                        To się stanie przy unstack:
+                                                  [
+                            1   200                 Tensor   1      200
+                          .54   210                 Tensor   .54    210
+                Tensor     .5   250    unstack->    Tensor   .5     250
+                          1.3   215                 Tensor   1.3    215
+                            1   232                 Tensor   1      232
+                                                  ]
 
+                        I teraz wewnaßrz tej tablicy z tensorami, będziemy sortować w normalny JS sposób
+                            features
+                                .sub(predictionPoint)
+                                .pow(2)
+                                .sum(1)
+                                .pow(0.5)
+                                .expandDims(1)
+                                .concat(labels, 1)
+                                .unstack()
 
+                            Następnie użyjemy normalnej funkcji JS na tablicach (sort). Poniżej krótkie przypomnienie jak działa:
+                                Przykład 1 :
+                                    const letters = [
+                                        'b',
+                                        'c',
+                                        'd',
+                                        'a'
+                                    ];
 
+                                    letters.sort(); // zwróci ['a','b','c','d']
 
+                                Przykład 2 :
+                                    const distances = [
+                                        { value: 20 },
+                                        { value: 30 },
+                                        { value: 15 },
+                                        { value: 5 },
+                                    ];
 
+                                    // distances.sort(); // To nie zadziała dobrze i zwróci taką samą tablice, bez żadnego sortowania
 
+                                    distances.sort((a,b) => {
+                                        return a.value > b.value ? 1 : -1;
+                                    });
+
+                            Więc u nas będzie:
+                                features
+                                    .sub(predictionPoint)
+                                    .pow(2)
+                                    .sum(1)
+                                    .pow(0.5)
+                                    .expandDims(1)
+                                    .concat(labels, 1)
+                                    .unstack()
+                                    .sort((a,b) => a.get(0) > b.get(0) ? 1 : -1)
+
+                                UWAGA! W tym edytorze kodu od Stephena, nie zoabczysz normalnej talbicy, tylko dziwne rzecz, ale to dlatego, ze edytor nie ejst gotowy na to
+                                W rzeczywistości tam jak się odwołąsz do np peirwszego elementu [0]. to bedzie git ( To chyba tylko dla tego edytora a nie ogolnie, ale nie jestem pewny)
+
+                            Kolejny krok:
+
+                        3) Take the top K records
+                            // Na początek przyjmiemy k jako 2
+                            const k = 2;
+                            features
+                                .sub(predictionPoint)
+                                .pow(2)
+                                .sum(1)
+                                .pow(0.5)
+                                .expandDims(1)
+                                .concat(labels, 1)
+                                .unstack()
+                                .sort((a,b) => a.get(0) > b.get(0) ? 1 : -1)
+                                // Poniższe slice, to normalna metoda JS, a nie z TF. Pamießaj, ze po użyciu unstack mamy tablicę tensorów! A nie tensor!
+                                .slice(0, k)
+                            Kolejny krok
+                        4) Average the label value of those top K records
+
+                            // Teraz generalnie bierzemy z tych "k" wynków śrędnią, czyli sumujeme wartości, i dzielimy przez ich ilość "k"
+                            features
+                                .sub(predictionPoint)
+                                .pow(2)
+                                .sum(1)
+                                .pow(0.5)
+                                .expandDims(1)
+                                .concat(labels, 1)
+                                .unstack()
+                                .sort((a,b) => a.get(0) > b.get(0) ? 1 : -1)
+                                .slice(0, k)
+                            // Ponieważ, tutaj od momentu użycia unstack() mamy normlaną tablicę to nie mozµey użyć sum(), bo to jest metoda n a tensorach
+                            // wiec uzyjemy czystego JS, a mianowicie funkcję "reduce"
+                                // Szybkie przypomnienie
 
 
 
