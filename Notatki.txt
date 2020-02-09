@@ -4,7 +4,7 @@ MACHINE LEARNING
 		Pytanie -> Przewidują, że bedzie 2400mm opadów w tym roku, jakie będą szkody wyrzadzone przez taki opady
 
 	Problem Solving Process
-		- Identify data that is relevant to the problem -> 'Features' are catagories of data pints that affect the value of a "label"
+		- Identify data that is relevant to the problem -> 'Features' are catagories of data points that affect the value of a "label"
 			* If the amount of ANNUAL RAINFALLL(independent variable -> 'feature') changes, we will probably see a change in FOOD DAMAGE COSTS(dependent variable -> 'label')
 		- Assemble a set of a data related to the problem you're trying to solve -> Datasets almost always clenup or formatting
 			* Data on Past Events:
