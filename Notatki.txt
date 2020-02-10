@@ -696,9 +696,32 @@ MACHINE LEARNING
                                 .slice(0, k)
                             // Ponieważ, tutaj od momentu użycia unstack() mamy normlaną tablicę to nie mozµey użyć sum(), bo to jest metoda n a tensorach
                             // wiec uzyjemy czystego JS, a mianowicie funkcję "reduce"
-                                // Szybkie przypomnienie
+                                // Szybkie przypomnienie -> Dobry materiał o tym masz tutaj -> https://www.youtube.com/watch?v=g1C40tDP0Bk
+                                    const distances = [
+                                        { color: 20 },
+                                        { color: 30 },
+                                        { color: 15 },
+                                        { color: 5 },
+                                    ],
 
+                                    distances.reduce((acc, obj) => {
+                                        return acc + obj.color;
+                                    }, 0); // to zwróci 70
 
+                            // Więc u nas będzie
+                                features
+                                    .sub(predictionPoint)
+                                    .pow(2)
+                                    .sum(1)
+                                    .pow(0.5)
+                                    .expandDims(1)
+                                    .concat(labels, 1)
+                                    .unstack()
+                                    .sort((a,b) => a.get(0) > b.get(0) ? 1 : -1)
+                                    .slice(0, k)
+                                    // .reduce((acc, pair) => acc + pair.get(1), 0) // tutaj pair, jest rensorem wewnątrz tablicy, czyli mozemy używać metod tensorflow jak get()
+                                    // Ostatecznie musimy jeszcze to co zwróci reduce podzielić przez "k", ięc będzie
+                                    .reduce((acc, pair) => acc + pair.get(1), 0) / k; // to już zwróci przewidywaną wartość ceny mieszkania
 
 
 
