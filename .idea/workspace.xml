@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="24516a42-91de-4bee-a023-8a29ff6210c8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Notatki.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Notatki.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,8 +30,9 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../TrueTeller" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
@@ -67,6 +67,7 @@
       <workItem from="1580762186534" duration="2650000" />
       <workItem from="1580934187457" duration="607000" />
       <workItem from="1581188085979" duration="7474000" />
+      <workItem from="1582145475508" duration="1037000" />
     </task>
     <servers />
   </component>

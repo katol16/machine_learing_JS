@@ -24,7 +24,7 @@ function knn(features, labels, predictionPoint, k) {
 let { features, labels, testFeatures, testLabels } = loadCSV('kc_house_data.csv', {
     shuffle: true, // Posortuj dobrze dane
     splitTest: 10, // podziel dane na testowe i trenignowe oraz daj znac ile danych ma być przeznaoczne na dane testowe, czyli -> spliTest: ilość danych na testSet
-    dataColumns: ['lat', 'long'], // w tych dancyh jest mnóśtwo kolumn, które nas nie obchodzą, ale są kolumny "lat" i "long" i je potrzbujemy, daltego je tutaj wypsizemy w tablicy. Na razie beirzemy tylko współzędne, pzoniej może cos jeszcze dodamy
+    dataColumns: ['lat', 'long', 'sqft_lot'], // w tych dancyh jest mnóśtwo kolumn, które nas nie obchodzą, ale są kolumny "lat" i "long" i je potrzbujemy, daltego je tutaj wypsizemy w tablicy. Na razie beirzemy tylko współzędne, pzoniej może cos jeszcze dodamy
     labelColumns: ['price'], // analogicznie jak wyżej tylko dla labels a nie dataSet
 });
 
@@ -56,3 +56,5 @@ testFeatures.forEach((testPoint, i) => {
     console.log('Errors in loop: ', err * 100)
 });
 
+// Mimo powyżśego wciąż nie mamy najlepszego wyniku, dlatego dodamy też powierzchnię do naszej estymatów
+// Datego dodaliśmy do dataColumns 'sqft_lot'
