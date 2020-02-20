@@ -58,3 +58,11 @@ testFeatures.forEach((testPoint, i) => {
 
 // Mimo powyżśego wciąż nie mamy najlepszego wyniku, dlatego dodamy też powierzchnię do naszej estymatów
 // Datego dodaliśmy do dataColumns 'sqft_lot'
+// Tam będziemy mieć taki przypadek, że po pierwsze jest duża różnica pomiędzy lat, long a sqft_lot. Po drugie, wewnątrz sqft_lot są duże róznice. Jest mieszkanie co ma 500 m^2 i takie co ma ponad milion, a dodatkowow jest duży "gap" pomeidzy ogromnym a dużym meiszakniem.
+// Z tych powodów użyjemy tutaj metode Standarized, do standaryzowania naszych danych.
+// Standarized działą tak:
+    // wartości są pomiędzy "from -1 standard deviation to 1 standard deviation". Oczywiscie mogą być więskz eniż -1 i 1. Ważne jest to, że średnie wartości i najczęstsze wartości będą w okolicach zera.
+    // Generalnie dlatego użwyamy standarized method, bo działą lepiej dla danych, któe mają wartości, które są bardzo różne od wiekszości wartości (Obiegaja mocno od reszty)
+    // Czyli np. jest 100 danych, które są liczbami w zakresie od 0 do 10, ale jest kilak co ma wartości ponad 500
+
+// Implementacja Standarized method w lekcji nr 56
