@@ -6,17 +6,28 @@ const tf = require('@tensorflow/tfjs'); // dopiero to wymaga TF librari
 const loadCSV = require('./load-csv');
 
 function knn(features, labels, predictionPoint, k) {
-    return features
-        .sub(predictionPoint)
-        .pow(2)
-        .sum(1)
-        .pow(0.5)
-        .expandDims(1)
-        .concat(labels, 1)
-        .unstack()
-        .sort((a,b) => a.get(0) > b.get(0) ? 1: -1)
-        .slice(0,k)
-        .reduce((acc, pair) => acc + pair.get(1), 0) / k;
+    // Standarization
+    // Pamiętaj, że standarization robimy dla predictionPoint i dla features
+    const { mean, variance } = tf.moments(features, 0);
+
+    // Standarization for predicitonPoint
+    const scaledPrediciton = predictionPoint.sub(mean).div(variance.pow(0.5));
+
+    return (
+        features
+            .sum(mean)
+            .div(variance.pow(0.5))
+            .sub(scaledPrediciton)
+            .pow(2)
+            .sum(1)
+            .pow(0.5)
+            .expandDims(1)
+            .concat(labels, 1)
+            .unstack()
+            .sort((a,b) => a.get(0) > b.get(0) ? 1: -1)
+            .slice(0,k)
+            .reduce((acc, pair) => acc + pair.get(1), 0) / k
+    );
 }
 
 // argumenty w loadCSV('nazwa_liku_z_ktoreg_importujemyDane', obiekt z opcjami np z uporządkowaniem "shuffle" danym przy pobraniem)
@@ -68,14 +79,28 @@ testFeatures.forEach((testPoint, i) => {
 // Implementacja Standarized method w lekcji nr 56
     // Standarization -> (Value - Average) / StandardDeviation  -> Generalnie za pomocą tensorflow, idzie to dość łątwo ogarnąć
         // Poniżej mały przykład
-        const numbers = tf.tensor([
-           [1,2], // przyjmiemy, ze pierwszy element w tym tensorze to latitiude a drugi sqft_lot
-           [1,2],
-           [1,2],
-        ]);
+        // const numbers = tf.tensor([
+        //    [1,2], // przyjmiemy, ze pierwszy element w tym tensorze to latitiude a drugi sqft_lot
+        //    [3,4,
+        //    [5,6],
+        // ]);
 
         // Tutaj warto zazanczyć, że to Standarization działa "per column or per feature" -> bo w zasadzie dana kolumna, to dany feature
 
-        // moments it's not a proeprty of a tensor. We can NOT call number.moment()
-        tf.moments();
+        // moments it's not a property of a tensor. We can NOT call number.moment()
+        // tf.moments(numbers); // tot utaj zwróci między innymi obiekty mean i variance.
+        // Ponziej zrobimy destructuring dla mean i variance i opsizmey co oznaczają
+        // const { mean, variance } = tf.moments(numbers);
+        // "mean" to po prostu "Average" z naszego wzoru
+        // "variance" -> to coś co ma związek z StandardDeviation, a mainowicie StandardDeviation = sqrt(variance).
 
+        // Ważna infromacja jest taka, że mean i variance zwrócą jedną wartość, a my potrzbeujemy wartości mean i variance per column, więc po dwie
+        // funckja "moments" działa podobnei jak sum ( ta zasada z axis), czyli defaultowo zadziala nie per column ale dla calosci, dlatego musimy pdoac dodatkowy argument
+        // Czyli: 0 - dla kolumn, 1 dla wierszy. Więc u nas będize 0
+        // const { mean, variance } = tf.moments(numbers, 0);
+        // Poniważ ostatecznie nasz  Standarization = (Value - mean) / sqrt(variance)
+        // więc mamy
+        // numbers.sub(mean).div(variance.pow(.5));
+        // powyzej zwróci coś takiego [[-1.224,-1.224],[0,0],[1.224,1.224]] -> i to jest git, takei wartości są ok, jak popatrzysz jak działa Standarization
+
+    // To był taki pobocnzy przykład w lekcji nr 57, bedziemy to rozwiąznaie stosować, dla naszego głównego przykładu
