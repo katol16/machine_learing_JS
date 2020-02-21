@@ -66,3 +66,16 @@ testFeatures.forEach((testPoint, i) => {
     // Czyli np. jest 100 danych, które są liczbami w zakresie od 0 do 10, ale jest kilak co ma wartości ponad 500
 
 // Implementacja Standarized method w lekcji nr 56
+    // Standarization -> (Value - Average) / StandardDeviation  -> Generalnie za pomocą tensorflow, idzie to dość łątwo ogarnąć
+        // Poniżej mały przykład
+        const numbers = tf.tensor([
+           [1,2], // przyjmiemy, ze pierwszy element w tym tensorze to latitiude a drugi sqft_lot
+           [1,2],
+           [1,2],
+        ]);
+
+        // Tutaj warto zazanczyć, że to Standarization działa "per column or per feature" -> bo w zasadzie dana kolumna, to dany feature
+
+        // moments it's not a proeprty of a tensor. We can NOT call number.moment()
+        tf.moments();
+
